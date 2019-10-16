@@ -1,0 +1,28 @@
+[v-cloak] {
+    display: none;
+}
+  
+html, body {
+    height: 100%;
+}
+  
+body {
+    margin: 0;
+    background: #1e2838;
+    color: #FFF;
+}
+
+.vtext {
+    overflow: hidden;
+    min-width: 300px;
+    min-height: 100px;
+}
+
+.TYPE_PATH {
+    cursor: pointer;
+    color: #2cf8d6;
+}
+
+.TYPE_HASV {
+    color: #fdb56b;
+}
