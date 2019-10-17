@@ -12,6 +12,7 @@ func main() {
 	e := echo.New()
 	api := e.Group("/api")
 	api.GET("/kvtree", ctl.GetKVTree)
+	api.PUT("/setkv", ctl.SetKV)
 
 	// e.GET("/css", css)
 	// e.GET("/js", js)

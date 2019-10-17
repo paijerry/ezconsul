@@ -22,9 +22,15 @@ const (
 type JJ struct {
 	K  string // key
 	Ks []JJ   // sub keys
-	V  string // value
+	V  string // value (不用了，改成另傳KVP)
 	P  string // path
 	T  string // type
+}
+
+// EZ -
+type EZ struct {
+	JJ  JJ
+	KVP map[string]string
 }
 
 // GG - no used
@@ -56,7 +62,7 @@ func GetKVTree(c echo.Context) error {
 	return c.JSON(http.StatusOK, kvlistToKVTree(kvList))
 }
 
-func kvlistToKVTree(Kvlist []string) JJ {
+func kvlistToKVTree(Kvlist []string) EZ {
 	kvlistArr := [][]string{}
 	for _, k := range Kvlist {
 		if k[len(k)-1:] == "/" {
@@ -64,13 +70,20 @@ func kvlistToKVTree(Kvlist []string) JJ {
 		}
 		kvlistArr = append(kvlistArr, strings.Split(k, "/"))
 	}
-	gg := JJ{
+	jj := JJ{
 		Ks: []JJ{},
 	}
+
 	for _, ks := range kvlistArr {
-		gg.inin(strings.Join(ks, "/"), ks...)
+		jj.inin(strings.Join(ks, "/"), ks...)
 	}
-	return gg
+
+	ez := EZ{
+		JJ:  jj,
+		KVP: getKVPairs(Kvlist),
+	}
+
+	return ez
 }
 
 func (g *JJ) inin(name string, k ...string) {
@@ -105,11 +118,11 @@ func (g *JJ) inin(name string, k ...string) {
 	// 判斷是是否為最後一個 (放 K or V)
 	g.Ks[i].T = TYPE_PATH
 	if len(k) == 1 { // 放 V, 寫入 V
-		s, err := getV(name)
-		if err != nil {
-			return
-		}
-		g.Ks[i].V = s
+		// s, err := getV(name)
+		// if err != nil {
+		// 	return
+		// }
+		// g.Ks[i].V = s
 		g.Ks[i].P = name
 		g.Ks[i].T = TYPE_HASV
 		return
@@ -119,33 +132,6 @@ func (g *JJ) inin(name string, k ...string) {
 	k = append(k[:0], k[1:]...)
 	// fmt.Println(k)
 	g.Ks[i].inin(name, k...)
-}
-
-func (g GG) inin2(name string, k ...string) {
-	j := GG{}
-	v := k[0]
-	if _, ok := g[v]; !ok {
-		g[v] = GG{}
-	} else {
-		// fmt.Println(g[v])
-		gg, ok := g[v].(GG)
-		if ok {
-			j = gg
-		}
-	}
-	if len(k) == 1 {
-		s, err := getV(name)
-		if err != nil {
-			g[v] = ""
-			return
-		}
-		g[v] = s
-		return
-	}
-	k = append(k[:0], k[1:]...)
-	// fmt.Println(k)
-	j.inin2(name, k...)
-	g[v] = j
 }
 
 func getV(k string) (s string, err error) {
@@ -162,4 +148,16 @@ func getV(k string) (s string, err error) {
 	}
 
 	return string(rspn.Body), nil
+}
+
+func getKVPairs(Ks []string) (kvp map[string]string) {
+	kvp = map[string]string{}
+	for i := 0; i < len(Ks); i++ {
+		s, err := getV(Ks[i])
+		if err == nil {
+			kvp[Ks[i]] = s
+		}
+	}
+	return
+
 }

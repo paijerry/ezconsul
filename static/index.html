@@ -12,8 +12,8 @@
         <div id="consul">
             <button @click="openAll">Open All</button>
             <ul>
-                <consul v-for="(node, index) in tree.Ks" :tree="node" :key="index" ></consul>
-            </ul>   
+                <consul v-for="(node, index) in tree.JJ.Ks" :tree="node" :key="index" :kvp="tree.KVP"></consul>
+            </ul>
         </div>
     </div>
     <script src="vue"></script>

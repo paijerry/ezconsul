@@ -12,6 +12,15 @@ body {
     color: #FFF;
 }
 
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+
 .vtext {
     overflow: hidden;
     min-width: 300px;
@@ -25,4 +34,11 @@ body {
 
 .TYPE_HASV {
     color: #fdb56b;
+}
+
+.vdiv{
+    float:left;
+    background-color: #156067;
+    padding: 5px 10px;
+    white-space: pre-wrap /* for vue html line break */
 }
