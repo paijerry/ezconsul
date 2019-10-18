@@ -42,3 +42,46 @@ body {
     padding: 5px 10px;
     white-space: pre-wrap /* for vue html line break */
 }
+
+.search-text {
+    color: #1bff00;
+}
+
+.replace-text {
+    color: #ff7070;
+}
+
+.delete-text {
+    color: #999999;
+    text-decoration-line: line-through;
+}
+
+#msg-wrap {
+    position: fixed;
+    top: 45px;
+    right: 5px;
+}
+
+#msg-wrap > div {
+    margin-bottom: 5px;
+    width: auto;
+    padding: 3px 6px;
+    overflow: hidden;
+    color: #000;
+    opacity: 0;
+    transform: translate(0, 20px);
+    -webkit-transition:opacity 0.5s, transform 0.5s;
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+#msg-wrap > .success {
+    background-color: #00FF00;
+    transform: translate(0);
+    opacity: 1;
+}
+
+#msg-wrap > .failed {
+    background-color: #FF0000;
+    transform: translate(0);
+    opacity: 1;
+}

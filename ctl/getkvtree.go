@@ -150,12 +150,16 @@ func getV(k string) (s string, err error) {
 	return string(rspn.Body), nil
 }
 
-func getKVPairs(Ks []string) (kvp map[string]string) {
+func getKVPairs(ks []string) (kvp map[string]string) {
 	kvp = map[string]string{}
-	for i := 0; i < len(Ks); i++ {
-		s, err := getV(Ks[i])
+	for i := 0; i < len(ks); i++ {
+		k := ks[i]
+		if k[len(k)-1:] == "/" {
+			continue
+		}
+		s, err := getV(k)
 		if err == nil {
-			kvp[Ks[i]] = s
+			kvp[k] = s
 		}
 	}
 	return

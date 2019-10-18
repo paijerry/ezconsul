@@ -10,10 +10,21 @@
 <body>
     <div id="main" v-cloak>
         <div id="consul">
+            <input type="text" v-model="address">
+            <button @click="setAddress">Set Address</button>
             <button @click="openAll">Open All</button>
+            <button @click="closeAll">Close All</button>
+            <input type="text" v-model="searchText">
+            <button @click="search">Search</button>
+            <input type="text" v-model="replaceText">
+            <button @click="replace">Replace</button>
+            <button @click="replaceSave">Confirm</button>
             <ul>
-                <consul v-for="(node, index) in tree.JJ.Ks" :tree="node" :key="index" :kvp="tree.KVP"></consul>
+                <consul v-for="(node, index) in result.JJ.Ks" :tree="node" :key="index" :kvp="result.KVP" :kvpafter="resultAfter.KVP" :kvpbefore="resultBefore.KVP"></consul>
             </ul>
+        </div>
+        <div id="msg-wrap">
+            <div v-for="(msg, index) in msgQue" :class="msg.status">{{msg.msg}}</div>
         </div>
     </div>
     <script src="vue"></script>
