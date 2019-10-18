@@ -2,10 +2,13 @@ var Consul = {
     name: 'consul',
     template: `
       <li @click.stop="toggle" :id="tree.P">
-        <div :class=tree.T>{{tree.K}} <span v-if="tree.Ks && tree.Ks.length === 0">[{{tree.P}}] <button @click.stop="edit">{{editBtn}}</button><button @click.stop="save">save</button></span></div>
-        <div v-show="!isEdit" class="vdiv" v-if="tree.Ks && tree.Ks.length === 0" v-html="kvp[tree.P]"></div>
-        <div class="clearfix"></div>
-        <textarea v-show="isEdit" class="vtext" v-if="tree.Ks && tree.Ks.length === 0" v-model="kvpafter[tree.P]"></textarea>
+        <div :class=tree.T  @click.stop="toggleV">{{tree.K}} <span v-if="tree.Ks && tree.Ks.length === 0">[{{tree.P}}]</span></div>
+        <div class="vwrap" v-if="tree.Ks && tree.Ks.length === 0">
+            <div v-show="!isEdit" class="vdiv" v-if="tree.Ks && tree.Ks.length === 0" v-html="kvp[tree.P]"></div>
+            <textarea v-show="isEdit" class="vtext" v-if="tree.Ks && tree.Ks.length === 0" v-model="kvpafter[tree.P]"></textarea>
+            <button @click.stop="edit">{{editBtn}}</button><button @click.stop="save">save</button>
+            <div class="clearfix"></div>
+        </div>
         <ul class="innerul" v-show="open" v-if="tree.Ks && tree.Ks.length > 0">
           <consul v-for="(node, index) in tree.Ks" :tree="node" :key="index" :kvp="kvp" :kvpafter="kvpafter" :kvpbefore="kvpbefore"></consul>
         </ul>
@@ -21,13 +24,24 @@ var Consul = {
         return {
             editBtn: "edit",
             isEdit: false,
-            open: false
+            open: false,
+            openV: false
         }
     },
     methods: {
-        toggle(){
+        toggle(e){
             if(this.tree.Ks && this.tree.Ks.length > 0){
                 this.open = !this.open
+            }
+        },
+        toggleV(e){
+            if(this.tree.Ks && this.tree.Ks.length <= 0){
+                console.log(e.currentTarget.parentNode.querySelector(".vwrap"));
+                if (e.currentTarget.parentNode.querySelector(".vwrap").style.display === "block"){
+                    e.currentTarget.parentNode.querySelector(".vwrap").style.display = "none";
+                } else {
+                    e.currentTarget.parentNode.querySelector(".vwrap").style.display = "block";
+                }
             }
         },
         edit(){
@@ -106,16 +120,24 @@ var app = new Vue({
             return
         },
         openAll: function(){
-            var uls = document.querySelectorAll(".innerul");
+            var uls = document.querySelectorAll(".innerul, .vwrap");
             for (var i = 0; i < uls.length; i++) {
                 uls[i].style.display = "block";
             }
+            // var vwrap = document.querySelectorAll(".vwrap");
+            // for (var i = 0; i < vwrap.length; i++) {
+            //     vwrap[i].style.display = "block";
+            // }
         },
         closeAll: function(){
-            var uls = document.querySelectorAll(".innerul");
+            var uls = document.querySelectorAll(".innerul, .vwrap");
             for (var i = 0; i < uls.length; i++) {
                 uls[i].style.display = "none";
             }
+            // var vwrap = document.querySelectorAll(".vwrap");
+            // for (var i = 0; i < vwrap.length; i++) {
+            //     vwrap[i].style.display = "none";
+            // }
         },
         search: function(){
             app.$data.result = JSON.parse(JSON.stringify(app.$data.resultBefore));
@@ -125,7 +147,7 @@ var app = new Vue({
                 if (v.indexOf(app.$data.searchText) !== -1){
                     // console.log(k, document.getElementById(k))
                     document.getElementById(k).style.display = "block";
-
+                    document.getElementById(k).querySelector(".vwrap").style.display = "block";
                     var doms = document.querySelectorAll(".innerul") 
                     for (let i = 0; i < doms.length; i++) {
                         if (doms[i].innerHTML.indexOf(k) !== -1) {

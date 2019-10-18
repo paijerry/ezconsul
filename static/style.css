@@ -21,19 +21,21 @@ body {
   clear: both;
 }
 
-.vtext {
-    overflow: hidden;
-    min-width: 300px;
-    min-height: 100px;
-}
-
 .TYPE_PATH {
     cursor: pointer;
     color: #2cf8d6;
 }
 
 .TYPE_HASV {
+    cursor: pointer;
     color: #fdb56b;
+}
+
+.vtext {
+    float: left;
+    overflow: hidden;
+    min-width: 300px;
+    min-height: 100px;
 }
 
 .vdiv{
@@ -41,6 +43,10 @@ body {
     background-color: #156067;
     padding: 5px 10px;
     white-space: pre-wrap /* for vue html line break */
+}
+
+.vwrap > button {
+    float:left;
 }
 
 .search-text {
