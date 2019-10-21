@@ -7,6 +7,11 @@ flag
 - d: debug mode(default: false)
 
 ```
+# go run
 go run *.go -p 1328
+
+# OR
+
+# execute go build file
 ./ezconsul-v0-mac -p 1328
 ```
