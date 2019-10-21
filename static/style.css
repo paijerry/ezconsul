@@ -8,8 +8,12 @@ html, body {
   
 body {
     margin: 0;
-    background: #1e2838;
+    background: #000;
     color: #FFF;
+}
+
+li {
+    display: block;
 }
 
 .clearfix:before,
@@ -19,6 +23,13 @@ body {
 }
 .clearfix:after {
   clear: both;
+}
+
+#consul {
+    background: #1e2838;
+    width: 1004px;
+    padding: 10px;
+    margin: 0 auto;
 }
 
 .TYPE_PATH {

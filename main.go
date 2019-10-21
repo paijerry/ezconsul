@@ -3,10 +3,19 @@ package main
 import (
 	"CypressTools/ezconsul/ctl"
 	"CypressTools/ezconsul/env"
+	"flag"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo"
+	"github.com/skratchdot/open-golang/open"
 )
+
+func init() {
+	flag.StringVar(&env.Port, "p", "1323", "app port")
+	flag.BoolVar(&env.DebugMode, "d", false, "debug mode or not")
+	flag.Parse()
+}
 
 func main() {
 
@@ -17,19 +26,23 @@ func main() {
 	api.PUT("/setkv", ctl.SetKV)
 	api.PUT("/setaddress", ctl.SetAddress)
 
-	// https://github.com/jteeuwen/go-bindata
-	// go-bindata static
-	e.GET("/css", css)
-	e.GET("/js", js)
-	e.GET("/vue", vue)
-	e.GET("/", html)
+	if env.DebugMode {
+		fmt.Println("=== Run in Debug Mode ===")
+		e.Static("/css", "static/style.css")
+		e.Static("/js", "static/script.js")
+		e.Static("/vue", "static/vue.js")
+		e.Static("/", "static/index.html")
+	} else {
+		// https://github.com/jteeuwen/go-bindata
+		// go-bindata static
+		e.GET("/css", css)
+		e.GET("/js", js)
+		e.GET("/vue", vue)
+		e.GET("/", html)
+		go open.Run("http://localhost:" + env.Port)
+	}
 
-	// e.Static("/css", "static/style.css")
-	// e.Static("/js", "static/script.js")
-	// e.Static("/vue", "static/vue.js")
-	// e.Static("/", "static/index.html")
-	//go open.Run("http://localhost" + env.Port)
-	e.Logger.Fatal(e.Start(env.Port))
+	e.Logger.Fatal(e.Start(":" + env.Port))
 }
 
 // ConsulAddress - CQ9 驗證 GStoken

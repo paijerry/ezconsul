@@ -2,14 +2,14 @@ var Consul = {
     name: 'consul',
     template: `
       <li @click.stop="toggle" :id="tree.P">
-        <div :class=tree.T  @click.stop="toggleV">{{tree.K}} <span v-if="tree.Ks && tree.Ks.length === 0">[{{tree.P}}]</span></div>
+        <div :class=tree.T  @click="toggleV">{{tree.K}} <span v-if="tree.Ks && tree.Ks.length === 0">[{{tree.P}}]</span></div>
         <div class="vwrap" v-if="tree.Ks && tree.Ks.length === 0">
             <div v-show="!isEdit" class="vdiv" v-if="tree.Ks && tree.Ks.length === 0" v-html="kvp[tree.P]"></div>
             <textarea v-show="isEdit" class="vtext" v-if="tree.Ks && tree.Ks.length === 0" v-model="kvpafter[tree.P]"></textarea>
             <button @click.stop="edit">{{editBtn}}</button><button @click.stop="save">save</button>
             <div class="clearfix"></div>
         </div>
-        <ul class="innerul" v-show="open" v-if="tree.Ks && tree.Ks.length > 0">
+        <ul class="innerul" v-if="tree.Ks && tree.Ks.length > 0">
           <consul v-for="(node, index) in tree.Ks" :tree="node" :key="index" :kvp="kvp" :kvpafter="kvpafter" :kvpbefore="kvpbefore"></consul>
         </ul>
       </li>
@@ -31,13 +31,19 @@ var Consul = {
     methods: {
         toggle(e){
             if(this.tree.Ks && this.tree.Ks.length > 0){
-                this.open = !this.open
+                if (e.currentTarget.querySelector(".innerul").style.display === "block" ||
+                    e.currentTarget.querySelector(".innerul").style.display === ""){
+                    e.currentTarget.querySelector(".innerul").style.display = "none";
+                } else {
+                    e.currentTarget.querySelector(".innerul").style.display = "block";
+                }
             }
         },
         toggleV(e){
             if(this.tree.Ks && this.tree.Ks.length <= 0){
-                console.log(e.currentTarget.parentNode.querySelector(".vwrap"));
-                if (e.currentTarget.parentNode.querySelector(".vwrap").style.display === "block"){
+                // console.log(e.currentTarget.parentNode.querySelector(".vwrap"));
+                if (e.currentTarget.parentNode.querySelector(".vwrap").style.display === "block" ||
+                    e.currentTarget.parentNode.querySelector(".vwrap").style.display === ""){
                     e.currentTarget.parentNode.querySelector(".vwrap").style.display = "none";
                 } else {
                     e.currentTarget.parentNode.querySelector(".vwrap").style.display = "block";
@@ -79,7 +85,7 @@ var app = new Vue({
     },
     data: {
         address: "",
-        searchText: "1324",
+        searchText: "",
         replaceText: "",
         result: {},
         resultBefore: {},
@@ -169,6 +175,7 @@ var app = new Vue({
                 if (v.indexOf(app.$data.searchText) !== -1){
                     // console.log(k, document.getElementById(k))
                     document.getElementById(k).style.display = "block";
+                    document.getElementById(k).querySelector(".vwrap").style.display = "block";
                     
                     var doms = document.querySelectorAll(".innerul") 
                     for (let i = 0; i < doms.length; i++) {
@@ -239,7 +246,7 @@ var app = new Vue({
     },
     mounted(){
         this.getKVTree(function(){
-            app.pushMsg("Welcome");
+            app.pushMsg("Welcome!!" + " Consul Address: " + app.$data.address );
         })
     }
 });
