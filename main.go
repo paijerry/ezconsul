@@ -12,6 +12,7 @@ import (
 )
 
 func init() {
+	flag.StringVar(&env.ConsulAddress, "c", "http://127.0.0.1:8500", "consul address")
 	flag.StringVar(&env.Port, "p", "1323", "app port")
 	flag.BoolVar(&env.DebugMode, "d", false, "debug mode or not")
 	flag.Parse()

@@ -106,7 +106,7 @@ func staticScriptJs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "static/script.js", size: 10619, mode: os.FileMode(420), modTime: time.Unix(1571637998, 0)}
+	info := bindataFileInfo{name: "static/script.js", size: 10619, mode: os.FileMode(420), modTime: time.Unix(1571803618, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
