@@ -1,15 +1,27 @@
 package main
 
 import (
-	"CypressTools/ezconsul/ctl"
-	"CypressTools/ezconsul/env"
+	_ "embed"
 	"flag"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo"
+	"github.com/paijerry/ezconsul/ctl"
+	"github.com/paijerry/ezconsul/env"
 	"github.com/skratchdot/open-golang/open"
 )
+
+//go:embed static/style.css
+var css string
+
+//go:embed static/script.js
+var js string
+
+//go:embed static/vue.js
+var vue string
+
+//go:embed static/index.html
+var index string
 
 func init() {
 	flag.StringVar(&env.ConsulAddress, "c", "http://127.0.0.1:8500", "consul address")
@@ -27,22 +39,23 @@ func main() {
 	api.PUT("/setkv", ctl.SetKV)
 	api.PUT("/setaddress", ctl.SetAddress)
 
-	if env.DebugMode {
-		fmt.Println("=== Run in Debug Mode ===")
-		e.Static("/css", "static/style.css")
-		e.Static("/js", "static/script.js")
-		e.Static("/vue", "static/vue.js")
-		e.Static("/", "static/index.html")
-	} else {
-		// https://github.com/jteeuwen/go-bindata
-		// go-bindata static
-		e.GET("/css", css)
-		e.GET("/js", js)
-		e.GET("/vue", vue)
-		e.GET("/", html)
-		go open.Run("http://localhost:" + env.Port)
-	}
+	e.GET("/css", func(c echo.Context) error {
+		return c.Blob(http.StatusOK, "text/css", []byte(css))
+	})
 
+	e.GET("/js", func(c echo.Context) error {
+		return c.String(http.StatusOK, js)
+	})
+
+	e.GET("/vue", func(c echo.Context) error {
+		return c.String(http.StatusOK, vue)
+	})
+
+	e.GET("/", func(c echo.Context) error {
+		return c.HTML(http.StatusOK, index)
+	})
+
+	go open.Run("http://localhost:" + env.Port)
 	e.Logger.Fatal(e.Start(":" + env.Port))
 }
 
@@ -52,44 +65,4 @@ func ConsulAddress(next echo.HandlerFunc) echo.HandlerFunc {
 		c.Response().Header().Set("address", env.ConsulAddress)
 		return next(c)
 	}
-}
-
-func css(c echo.Context) error {
-
-	content, err := Asset("static/style.css")
-	if err != nil {
-		return c.String(http.StatusOK, "not found")
-	}
-
-	return c.Blob(http.StatusOK, "text/css", content)
-}
-
-func js(c echo.Context) error {
-
-	content, err := Asset("static/script.js")
-	if err != nil {
-		return c.String(http.StatusOK, "not found")
-	}
-
-	return c.Blob(http.StatusOK, "js", content)
-}
-
-func vue(c echo.Context) error {
-
-	content, err := Asset("static/vue.js")
-	if err != nil {
-		return c.String(http.StatusOK, "not found")
-	}
-
-	return c.Blob(http.StatusOK, "vue", content)
-}
-
-func html(c echo.Context) error {
-
-	content, err := Asset("static/index.html")
-	if err != nil {
-		return c.String(http.StatusOK, "not found")
-	}
-
-	return c.Blob(http.StatusOK, "html", content)
 }

@@ -1,12 +1,12 @@
 package ctl
 
 import (
-	"CypressTools/ezconsul/env"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/labstack/echo"
+	"github.com/paijerry/ezconsul/env"
 )
 
 // SetAddress -

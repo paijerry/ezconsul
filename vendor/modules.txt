@@ -1,0 +1,44 @@
+# github.com/labstack/echo v3.3.10+incompatible
+## explicit
+github.com/labstack/echo
+# github.com/labstack/gommon v0.4.0
+## explicit; go 1.12
+github.com/labstack/gommon/color
+github.com/labstack/gommon/log
+# github.com/mattn/go-colorable v0.1.11
+## explicit; go 1.13
+github.com/mattn/go-colorable
+# github.com/mattn/go-isatty v0.0.14
+## explicit; go 1.12
+github.com/mattn/go-isatty
+# github.com/paijerry/ezapi v1.0.0
+## explicit
+github.com/paijerry/ezapi
+# github.com/paijerry/ezerr v0.0.0-20180613075609-b71e1c9403ed
+## explicit
+github.com/paijerry/ezerr
+# github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
+## explicit
+github.com/skratchdot/open-golang/open
+# github.com/valyala/bytebufferpool v1.0.0
+## explicit
+github.com/valyala/bytebufferpool
+# github.com/valyala/fasttemplate v1.2.1
+## explicit; go 1.12
+github.com/valyala/fasttemplate
+# golang.org/x/crypto v0.4.0
+## explicit; go 1.17
+golang.org/x/crypto/acme
+golang.org/x/crypto/acme/autocert
+# golang.org/x/net v0.3.0
+## explicit; go 1.17
+golang.org/x/net/idna
+# golang.org/x/sys v0.3.0
+## explicit; go 1.17
+golang.org/x/sys/unix
+# golang.org/x/text v0.5.0
+## explicit; go 1.17
+golang.org/x/text/secure/bidirule
+golang.org/x/text/transform
+golang.org/x/text/unicode/bidi
+golang.org/x/text/unicode/norm
